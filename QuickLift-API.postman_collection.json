@@ -1,0 +1,742 @@
+{
+  "info": {
+    "name": "QuickLift API",
+    "description": "Complete API collection for QuickLift platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"9876543210\",\n  \"password\": \"Password123\",\n  \"role\": \"customer\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/register",
+              "host": ["{{BASE_URL}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/login",
+              "host": ["{{BASE_URL}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/refresh-token",
+              "host": ["{{BASE_URL}}"],
+              "path": ["auth", "refresh-token"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delivery Partners",
+      "item": [
+        {
+          "name": "Register Partner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Rajesh Kumar"
+                },
+                {
+                  "key": "mobileNumber",
+                  "value": "9876543210"
+                },
+                {
+                  "key": "city",
+                  "value": "Lucknow"
+                },
+                {
+                  "key": "aadharNumber",
+                  "value": "123456789012"
+                },
+                {
+                  "key": "panNumber",
+                  "value": "ABCDE1234F"
+                },
+                {
+                  "key": "aadharImage",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "panImage",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "profilePhoto",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/partners/register",
+              "host": ["{{BASE_URL}}"],
+              "path": ["partners", "register"]
+            }
+          }
+        },
+        {
+          "name": "Add Vehicle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "vehicleType",
+                  "value": "bike"
+                },
+                {
+                  "key": "vehicleNumber",
+                  "value": "UP14AB1234"
+                },
+                {
+                  "key": "registrationCertificate",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "insurance",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "pollution",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/partners/{{PARTNER_ID}}/vehicles",
+              "host": ["{{BASE_URL}}"],
+              "path": ["partners", "{{PARTNER_ID}}", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Set Service Area",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"center\": {\n    \"latitude\": 26.8467,\n    \"longitude\": 80.9462\n  },\n  \"radius\": 20,\n  \"serviceAreas\": [\n    {\n      \"area\": \"Gomti Nagar\",\n      \"pinCodes\": [\"226010\"]\n    },\n    {\n      \"area\": \"Hazratganj\",\n      \"pinCodes\": [\"226001\"]\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/partners/{{PARTNER_ID}}/service-area",
+              "host": ["{{BASE_URL}}"],
+              "path": ["partners", "{{PARTNER_ID}}", "service-area"]
+            }
+          }
+        },
+        {
+          "name": "Get Partner Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/partners/{{PARTNER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["partners", "{{PARTNER_ID}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Partner Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ONLINE\",\n  \"currentLocation\": {\n    \"latitude\": 26.8467,\n    \"longitude\": 80.9462\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/partners/{{PARTNER_ID}}/status",
+              "host": ["{{BASE_URL}}"],
+              "path": ["partners", "{{PARTNER_ID}}", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickupLocation\": {\n    \"address\": \"123 Main Street, Lucknow\",\n    \"latitude\": 26.8467,\n    \"longitude\": 80.9462,\n    \"contactName\": \"John Doe\",\n    \"contactPhone\": \"9876543210\"\n  },\n  \"deliveryLocation\": {\n    \"address\": \"456 Park Lane, Lucknow\",\n    \"latitude\": 26.8500,\n    \"longitude\": 80.9500,\n    \"contactName\": \"Jane Doe\",\n    \"contactPhone\": \"9876543211\"\n  },\n  \"parcel\": {\n    \"weight\": 2,\n    \"dimensions\": \"20x15x10\",\n    \"value\": 500,\n    \"description\": \"Electronics package\",\n    \"requiresSignature\": false\n  },\n  \"vehicleType\": \"bike\",\n  \"paymentMethod\": \"wallet\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/orders",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Order Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}"]
+            }
+          }
+        },
+        {
+          "name": "Track Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}/track",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}", "track"]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DELIVERED\",\n  \"deliveryProof\": {\n    \"photo\": \"base64_image_data\",\n    \"signature\": \"base64_signature_data\",\n    \"timestamp\": \"2026-05-13T14:45:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}/status",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Accept Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}/accept",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}", "accept"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer requested cancellation\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}/cancel",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Rate Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 5,\n  \"comment\": \"Excellent service!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}/rate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}", "rate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/admin/requests/pending?type=partner&page=1&limit=10",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "requests", "pending"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "partner"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Request",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Documents verified successfully\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admin/requests/{{REQUEST_ID}}/approve",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "requests", "{{REQUEST_ID}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Request",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Aadhar image is unclear\",\n  \"resubmitAllowed\": true\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admin/requests/{{REQUEST_ID}}/reject",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "requests", "{{REQUEST_ID}}", "reject"]
+            }
+          }
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/admin/orders?status=DELIVERED&page=1&limit=10",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "orders"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DELIVERED"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Partner Performance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/admin/partners/{{PARTNER_ID}}/performance",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "partners", "{{PARTNER_ID}}", "performance"]
+            }
+          }
+        },
+        {
+          "name": "Get Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/admin/analytics",
+              "host": ["{{BASE_URL}}"],
+              "path": ["admin", "analytics"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Get Wallet Balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/wallet/{{USER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["wallet", "{{USER_ID}}"]
+            }
+          }
+        },
+        {
+          "name": "Add Money to Wallet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500,\n  \"paymentMethod\": \"razorpay\",\n  \"orderId\": \"order_1A2b3C4d5E6f7G\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/wallet/{{USER_ID}}/add-money",
+              "host": ["{{BASE_URL}}"],
+              "path": ["wallet", "{{USER_ID}}", "add-money"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "item": [
+        {
+          "name": "Create Support Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "subject",
+                  "value": "Unable to attach vehicle"
+                },
+                {
+                  "key": "category",
+                  "value": "TECHNICAL"
+                },
+                {
+                  "key": "priority",
+                  "value": "HIGH"
+                },
+                {
+                  "key": "description",
+                  "value": "Getting error while trying to upload vehicle documents"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/support/tickets",
+              "host": ["{{BASE_URL}}"],
+              "path": ["support", "tickets"]
+            }
+          }
+        },
+        {
+          "name": "Get Support Tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/support/tickets?page=1&limit=10",
+              "host": ["{{BASE_URL}}"],
+              "path": ["support", "tickets"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Chat Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"I've attached the error screenshot\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/support/tickets/{{TICKET_ID}}/messages",
+              "host": ["{{BASE_URL}}"],
+              "path": ["support", "tickets", "{{TICKET_ID}}", "messages"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "REFRESH_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "USER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "PARTNER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ORDER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "REQUEST_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "TICKET_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
