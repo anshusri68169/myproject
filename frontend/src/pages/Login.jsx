@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
-import { login as loginAction } from '../store/slices/authSlice';
+import { login as loginAction } from '../store/authSlice';
 import { authService } from '../services/auth';
 
 const Login = () => {
@@ -36,7 +36,7 @@ const Login = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       
-      dispatch(loginAction({ user, token }));
+      dispatch(loginAction({ user, token, refreshToken: token }));
 
       toast.success('Login successful!');
 
