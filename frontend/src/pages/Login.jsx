@@ -11,7 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
     email: 'customer@test.com',
-    password: 'Test@123',
+    password: 'Test@12345',
   });
 
   const handleChange = (e) => {
@@ -147,7 +147,7 @@ const Login = () => {
             </button>
           </div>
           <p className="text-xs text-gray-500 mt-2 text-center">
-            All test accounts use password: <strong>Test@123</strong>
+            All test accounts use password: <strong>Test@12345</strong>
           </p>
         </div>
 
