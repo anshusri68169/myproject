@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
-import { login as loginAction } from '../store/authSlice';
+import { login as loginAction } from '../store/slices/authSlice';
 import { authService } from '../services/auth';
 
 const Login = () => {
