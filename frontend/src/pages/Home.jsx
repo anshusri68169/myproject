@@ -33,7 +33,6 @@ const Home = () => {
     }
   }, [user, isAuthenticated]);
 
-  const handleDashboardClick = (e) => {
  const handleDashboardClick = (e) => {
   e.preventDefault();
   console.log('Dashboard button clicked');
