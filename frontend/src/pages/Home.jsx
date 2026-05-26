@@ -8,6 +8,13 @@ const Home = () => {
   const navigate = useNavigate();
   const [dashboardLink, setDashboardLink] = useState('');
 
+  // Dashboard link mapping based on user role
+  const dashboardLinks = {
+    customer: '/customer/dashboard',
+    partner: '/partner/dashboard',
+    enterprise: '/enterprise/dashboard',
+    admin: '/admin/dashboard',
+  };
   useEffect(() => {
     // Debug: Check what's in Redux and localStorage
     console.log('Redux Auth State:', { isAuthenticated, user });
