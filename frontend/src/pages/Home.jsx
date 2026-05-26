@@ -34,18 +34,32 @@ const Home = () => {
   }, [user, isAuthenticated]);
 
   const handleDashboardClick = (e) => {
-    e.preventDefault();
-    console.log('Dashboard button clicked');
-    console.log('Current Auth State:', { isAuthenticated, user });
-    console.log('Navigating to:', dashboardLink);
+ const handleDashboardClick = (e) => {
+  e.preventDefault();
+  console.log('Dashboard button clicked');
+  console.log('Current Auth State:', { isAuthenticated, user });
+  
+  // Determine link if not already set
+  let link = dashboardLink;
+  if (!link && user?.role) {
+    const links = {
+      customer: '/customer/dashboard',
+      partner: '/partner/dashboard',
+      enterprise: '/enterprise/dashboard',
+      admin: '/admin/dashboard',
+    };
+    link = links[user.role] || '/customer/dashboard';
+  }
+  
+  console.log('Navigating to:', link);
 
-    if (!dashboardLink) {
-      console.error('No dashboard link available');
-      return;
-    }
+  if (!link) {
+    console.error('No dashboard link available - user role not found');
+    return;
+  }
 
-    navigate(dashboardLink);
-  };
+  navigate(link);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
