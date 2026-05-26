@@ -101,12 +101,14 @@ router.post(
     res.status(200).json({
       success: true,
       data: {
+                token,
+        refreshToken,
+        user:{
         userId: user._id,
         email: user.email,
         role: user.role,
         name: user.name,
-        token,
-        refreshToken,
+            },
       },
     });
   })
