@@ -22,11 +22,11 @@ const generateRefreshToken = (userId, role) => {
   );
 };
 
-// Register User
+// Register User (Customer)
 router.post(
   '/register',
   asyncHandler(async (req, res) => {
-    const { email, phone, password, role, name } = req.body;
+    const { email, phone, password, role, name, address } = req.body;
 
     // Validation
     if (!email || !phone || !password || !name) {
@@ -47,8 +47,9 @@ router.post(
       email,
       phone,
       password,
-      role: role || 'customer',
+      role: 'customer',
       name,
+      address: address || {},
       city: 'Lucknow',
     });
 
@@ -65,6 +66,150 @@ router.post(
         userId: user._id,
         email: user.email,
         role: user.role,
+        name: user.name,
+        token,
+        refreshToken,
+      },
+    });
+  })
+);
+
+// Register Partner
+router.post(
+  '/register/partner',
+  asyncHandler(async (req, res) => {
+    const { 
+      email, 
+      phone, 
+      password, 
+      name, 
+      address, 
+      vehicleDetails, 
+      bankDetails 
+    } = req.body;
+
+    // Validation
+    if (!email || !phone || !password || !name) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    if (!vehicleDetails || !vehicleDetails.registrationNumber) {
+      return res.status(400).json({ error: 'Vehicle details required' });
+    }
+
+    // Check if user exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { phone }],
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: 'User already exists' });
+    }
+
+    // Create new partner user
+    const user = new User({
+      email,
+      phone,
+      password,
+      role: 'partner',
+      name,
+      address: address || {},
+      city: address?.city || 'Lucknow',
+      vehicleDetails: {
+        type: vehicleDetails.type,
+        registrationNumber: vehicleDetails.registrationNumber,
+        capacity: vehicleDetails.capacity,
+      },
+      bankDetails: bankDetails || {},
+      status: 'pending', // Partners need approval
+    });
+
+    await user.save();
+
+    // Generate tokens
+    const token = generateToken(user._id, user.role);
+    const refreshToken = generateRefreshToken(user._id, user.role);
+
+    res.status(201).json({
+      success: true,
+      message: 'Partner registration successful. Awaiting admin approval.',
+      data: {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        status: user.status,
+        token,
+        refreshToken,
+      },
+    });
+  })
+);
+
+// Register Enterprise
+router.post(
+  '/register/enterprise',
+  asyncHandler(async (req, res) => {
+    const { 
+      email, 
+      phone, 
+      password, 
+      name, 
+      address, 
+      companyName,
+      registrationNumber,
+      gstNumber
+    } = req.body;
+
+    // Validation
+    if (!email || !phone || !password || !name) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    if (!companyName || !registrationNumber) {
+      return res.status(400).json({ error: 'Company details required' });
+    }
+
+    // Check if user exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { phone }],
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: 'User already exists' });
+    }
+
+    // Create new enterprise user
+    const user = new User({
+      email,
+      phone,
+      password,
+      role: 'enterprise',
+      name,
+      address: address || {},
+      city: address?.city || 'Lucknow',
+      companyName,
+      registrationNumber,
+      gstNumber,
+      status: 'pending', // Enterprises need approval
+    });
+
+    await user.save();
+
+    // Generate tokens
+    const token = generateToken(user._id, user.role);
+    const refreshToken = generateRefreshToken(user._id, user.role);
+
+    res.status(201).json({
+      success: true,
+      message: 'Enterprise registration successful. Awaiting admin approval.',
+      data: {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        companyName: user.companyName,
+        status: user.status,
         token,
         refreshToken,
       },
@@ -101,14 +246,14 @@ router.post(
     res.status(200).json({
       success: true,
       data: {
-                token,
+        token,
         refreshToken,
-        user:{
-        userId: user._id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-            },
+        user: {
+          userId: user._id,
+          email: user.email,
+          role: user.role,
+          name: user.name,
+        },
       },
     });
   })
@@ -145,5 +290,27 @@ router.post('/logout', asyncHandler(async (req, res) => {
     message: 'Logged out successfully',
   });
 }));
+
+// Get Profile
+router.get(
+  '/profile',
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user?.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        userId: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        phone: user.phone,
+      },
+    });
+  })
+);
 
 export default router;
