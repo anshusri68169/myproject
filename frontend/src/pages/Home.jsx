@@ -1,9 +1,44 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FiTruck, FiPackage, FiMapPin, FiClock } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 
 const Home = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const [dashboardLink, setDashboardLink] = useState('');
+
+  useEffect(() => {
+    // Debug: Check what's in Redux and localStorage
+    console.log('Redux Auth State:', { isAuthenticated, user });
+    console.log('LocalStorage Token:', localStorage.getItem('token'));
+    console.log('LocalStorage User:', localStorage.getItem('user'));
+
+    // Determine dashboard link based on user role
+    if (user?.role) {
+      const links = {
+        customer: '/customer/dashboard',
+        partner: '/partner/dashboard',
+        enterprise: '/enterprise/dashboard',
+        admin: '/admin/dashboard',
+      };
+      setDashboardLink(links[user.role] || '/customer/dashboard');
+    }
+  }, [user, isAuthenticated]);
+
+  const handleDashboardClick = (e) => {
+    e.preventDefault();
+    console.log('Dashboard button clicked');
+    console.log('Current Auth State:', { isAuthenticated, user });
+    console.log('Navigating to:', dashboardLink);
+
+    if (!dashboardLink) {
+      console.error('No dashboard link available');
+      return;
+    }
+
+    navigate(dashboardLink);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -40,14 +75,14 @@ const Home = () => {
           ) : (
             <div>
               <p className="text-xl text-gray-700 mb-6">
-                Welcome, {user?.name}!
+                Welcome, {user?.name}! (Role: {user?.role})
               </p>
-              <Link
-                to={user?.role === 'customer' ? '/customer/dashboard' : `/partner/dashboard`}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block"
+              <button
+                onClick={handleDashboardClick}
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block cursor-pointer"
               >
                 Go to Dashboard
-              </Link>
+              </button>
             </div>
           )}
         </div>
